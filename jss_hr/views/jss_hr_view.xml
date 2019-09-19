@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Employee -->
+  <record id="jss_view_employee_form" model="ir.ui.view">
+    <field name="name">jss.hr.employee.form</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr.view_employee_form"/>
+    <field name="arch" type="xml">
+	     <!--xpath expr="//label[@for='name']" position="replace">
+            </xpath-->
+	    <xpath expr="//field[@name='name']" position="replace">
+		    <field name="name" class="oe_read_only">Nill</field>
+		    <field name="first_name" placeholder="First Name" class="oe_edit_only"/>
+		    <field name="last_name" placeholder="Last Name" class="oe_edit_only"/>
+	    </xpath>
+      <xpath expr="//page[@name='public']" position="replace">
+        <page name="public" string="Public Information">
+          <group>
+            <group string="Contact Information" attrs="{'invisible':1}">
+              <field name="address_id" context="{'show_address': 1}" options="{&quot;always_reload&quot;: True, &quot;highlight_first_line&quot;: True}"/>
+              <field name="mobile_phone"/>
+              <field name="work_location"/>
+              <field name="work_email" widget="email"/>
+              <field name="work_phone"/>
+            </group>
+            <group string="Position">
+              <field name="employee_id" groups="hr.group_hr_user"/>
+              <field name="work_area"/>
+              <field name="department_id"/>
+              <field name="job_id" attrs="{'invisible':1}"/>
+              <field name="parent_id" widget="selection"/>
+              <field name="coach_id" attrs="{'invisible':1}"/>
+              <field name="calendar_id" attrs="{'invisible':1}"/>
+            </group>
+          </group>
+          <field name="notes" placeholder="Other Information ..." colspan="4"/>
+        </page>
+      </xpath>
+      <xpath expr="//page[@name='personal_information']" position="replace">
+        <page name="personal_information" string="Personal Information" groups="hr.group_hr_user">
+          <group>
+            <group string="Citizenship &amp; Other Information">
+              <field name="country_id" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" attrs="{'invisible':1}"/>
+              <field name="identification_id" groups="hr.group_hr_user" attrs="{'invisible':1}"/>
+              <field name="passport_id" groups="hr.group_hr_user" attrs="{'invisible':1}"/>
+              <field name="pan_number" groups="hr.group_hr_user"/>
+              <field name="uan_number" groups="hr.group_hr_user"/>
+              <field name="aadhar_number" groups="hr.group_hr_user"/>
+              <field name="bank_account_id" context="{'default_partner_id': address_home_id}"/>
+            </group>
+            <group string="Contact Information">
+              <label for="street" string="Address"/>
+              <div class="o_address_format">
+                <field name="street" placeholder="Street..." class="o_address_street"/>
+                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                <field name="indian_city" placeholder="City" class="o_address_city"/>
+                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                <div>
+                  <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}" context="{'country_id': country_id, 'zip': zip}"/>
+                  <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                </div>
+              </div>
+              <field name="mobile" widget="phone"/>
+              <field name="personal_email" widget="email"/>
+              <field name="address_home_id" context="{'show_address': 1}" options="{&quot;always_reload&quot;: True, &quot;highlight_first_line&quot;: True}" invisible="1"/>
+      </group>
+            <group string="Login User">
+              <field name="user_id" string="Related User"/>
+            </group>
+
+            <group string="Status">
+              <field name="gender"/>
+              <field name="marital"/>
+            </group>
+            <group string="Birth">
+              <field name="birthday"/>
+            </group>
+          </group>
+        </page>
+      </xpath>
+      <xpath expr="//page[@name='hr_settings']" position="replace">
+        <page name="hr_settings" string="HR Settings" groups="hr.group_hr_user" attrs="{'invisible':1}">
+          <group>
+            <group string="Status" name="active_group">
+              <field name="company_id" groups="base.group_multi_company"/>
+              <!--field name="user_id" string="Related User"/-->
+            </group>
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
+  <record id="hr.view_employee_tree" model="ir.ui.view">
+    <field name="name">hr.employee.tree</field>
+    <field name="model">hr.employee</field>
+    <field name="arch" type="xml">
+      <tree string="Employees" decoration-bf="message_needaction==True">
+        <field name="employee_id" widget="Integer" type="Char" class="pos-center-align"  groups="hr.group_hr_user"/>
+        <field name="name"/>
+        <field name="work_phone" invisible="1"/>
+        <field name="work_email" invisible="1"/>
+        <field name="company_id" groups="base.group_multi_company"/>
+        <field name="department_id"/>
+        <field name="job_id" invisible="1"/>
+        <field name="parent_id"/>
+        <field name="coach_id" invisible="1"/>
+        <field name="message_needaction" invisible="1"/>
+      </tree>
+    </field>
+  </record>
+  <!--record id="jss_view_employee_tree" model="ir.ui.view">
+        <field name="name">jss.hr.employee.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="employee_id" groups="hr.group_hr_user"/>
+            </xpath>
+        </field>
+    </record-->
+  <record id="increment_emloyee_id_sequence" model="ir.sequence">
+    <field name="name">Employee ID Incrementation</field>
+    <field name="code">increment_employee_id</field>
+    <field name="prefix"/>
+    <field name="padding">5</field>
+    <field name="company_id" eval="False"/>
+  </record>
+  <!-- jss_hr.workarea -->
+  <record id="view_workarea_form" model="ir.ui.view">
+    <field name="name">jss_hr.workarea.form</field>
+    <field name="model">jss_hr.workarea</field>
+    <field name="arch" type="xml">
+      <form string="Work Area">
+        <sheet>
+          <group col="4">
+            <field name="project_name"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+</odoo>
