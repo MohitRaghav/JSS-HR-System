@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!--Hr Contract Allowances-->
+  <record id="jss_hr_salary_rule_travel" model="hr.salary.rule">
+    <field name="code">TA</field>
+    <field name="name">Travel Allowance</field>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.travel_allowance)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = contract.travel_allowance</field>
+    <field name="sequence" eval="90"/>
+    <field name="note">This allowance is normally given as an additional benefit to employees.</field>
+  </record>
+  <record id="jss_hr_salary_rule_educational" model="hr.salary.rule">
+    <field name="code">EDU</field>
+    <field name="name">Educational Allowance</field>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.educaltional_allowance)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = contract.educaltional_allowance</field>
+    <field name="sequence" eval="90"/>
+    <field name="note">This allowance is normally given as an additional benefit to employees.</field>
+  </record>
+  <!--Hr Contract Deductions-->
+  <record id="jss_hr_payslip_rule_advance_salary" model="hr.salary.rule">
+    <field name="code">ADSLRY</field>
+    <field name="name">Advance Salary</field>
+    <field name="category_id" ref="hr_payroll.DED"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.advanceSalary_deduction)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = - (contract.advanceSalary_deduction)</field>
+    <field name="appears_on_payslip" eval="True"/>
+    <field name="sequence" eval="101"/>
+  </record>
+  <record id="jss_hr_payslip_rule_mess" model="hr.salary.rule">
+    <field name="code">MESS</field>
+    <field name="name">Mess Deduction</field>
+    <field name="category_id" ref="hr_payroll.DED"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.mess_deduction)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = - (contract.mess_deduction)</field>
+    <field name="appears_on_payslip" eval="True"/>
+    <field name="sequence" eval="101"/>
+  </record>
+  <record id="jss_hr_payslip_rule_amenities" model="hr.salary.rule">
+    <field name="code">AMNTY</field>
+    <field name="name">Amenities Deduction</field>
+    <field name="category_id" ref="hr_payroll.DED"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.amenities_deduction)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = - (contract.amenities_deduction)</field>
+    <field name="appears_on_payslip" eval="True"/>
+    <field name="sequence" eval="101"/>
+  </record>
+  <record id="jss_hr_payslip_rule_creche" model="hr.salary.rule">
+    <field name="code">CRECHE</field>
+    <field name="name">Creche Deduction</field>
+    <field name="category_id" ref="hr_payroll.DED"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.creche_other_deduction)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = - (contract.creche_other_deduction)</field>
+    <field name="appears_on_payslip" eval="True"/>
+    <field name="sequence" eval="101"/>
+  </record>
+  <record id="hr_payslip_rule_tds" model="hr.salary.rule">
+    <field name="code">TDS</field>
+    <field name="name">Tax Deducted at Source</field>
+    <field name="category_id" ref="hr_payroll.DED"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool((contract.tds*contract.wage)/100)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = -((contract.tds*contract.wage)/100)</field>
+    <!--field name="register_id" ref=""/-->
+    <field name="sequence" eval="102"/>
+    <field name="note">As per income tax rules, all payment which are taxable in nature should be done after deduction of taxes at the source itself. Hence employer compute income tax on salary payment and deduct it every month. This TDS is based on employee’s saving/investment declaration at the start of year. If investments for tax saving is not done, large amount may be deducted in last few months.</field>
+  </record>
+  <record id="jss_hr_payslip_rule_emp_pf" model="hr.salary.rule">
+    <field name="code">EMPF</field>
+    <field name="name">Employee Provident Fund</field>
+    <field name="category_id" ref="hr_payroll.DED"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.emp_provident_fund)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = - (contract.emp_provident_fund)</field>
+    <field name="appears_on_payslip" eval="True"/>
+    <field name="sequence" eval="101"/>
+  </record>
+  <!--Employer related records-->
+  <record id="jss_hr_payslip_rule_basic_fifty" model="hr.salary.rule">
+    <field name="code">BSFIFTY</field>
+    <field name="name">Employer Basic*.5% and above15000 than 15000*.5%</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.employer_basic_fifty_or_15000_fifty)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.employer_basic_fifty_or_15000_fifty)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="301"/>
+  </record>
+  <record id="jss_hr_payslip_rule_basic_sixFive" model="hr.salary.rule">
+    <field name="code">BSSIXFIVE</field>
+    <field name="name">Employer Basic*0.65%</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.employer_basic_fifty_or_15000_fifty)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.employer_basic_fifty_or_15000_fifty)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="302"/>
+  </record>
+  <record id="jss_hr_payslip_rule_emplr_pf" model="hr.salary.rule">
+    <field name="code">EMPLRPF</field>
+    <field name="name">P.F. Cont. Employer</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.employer_pf)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.employer_pf)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="303"/>
+  </record>
+  <record id="jss_hr_payslip_rule_total_pf" model="hr.salary.rule">
+    <field name="code">TTLPF</field>
+    <field name="name">Total PF Contribution</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.total_pf)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.total_pf)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="304"/>
+  </record>
+  <record id="jss_hr_payslip_rule_mess_subsidy" model="hr.salary.rule">
+    <field name="code">MSSUB</field>
+    <field name="name">Mess Subsidy</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.mess_subsidy)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.mess_subsidy)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="305"/>
+  </record>
+  <record id="jss_hr_payslip_rule_medical_benefit" model="hr.salary.rule">
+    <field name="code">MEDBF</field>
+    <field name="name">Medical Benefit</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.medical_benefit)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.medical_benefit)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="306"/>
+  </record>
+  <record id="jss_hr_payslip_rule_leave_n_othr" model="hr.salary.rule">
+    <field name="code">LVOTHR</field>
+    <field name="name">Leave &amp; Other Benefit</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.leave_and_other_benefit)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.leave_and_other_benefit)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="307"/>
+  </record>
+  <record id="jss_hr_payslip_rule_gratuety" model="hr.salary.rule">
+    <field name="code">GRATY</field>
+    <field name="name">Gratuety</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.gratuety)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.gratuety)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="308"/>
+  </record>
+  <record id="jss_hr_payslip_rule_total_benefit" model="hr.salary.rule">
+    <field name="code">TTLBF</field>
+    <field name="name">Total Benefit</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.total_benefit)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.total_benefit + contract.employer_pf)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="309"/>
+  </record>
+  <record id="jss_hr_payslip_rule_grand_total" model="hr.salary.rule">
+    <field name="code">GRTTL</field>
+    <field name="name">Grand Total</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.grand_total)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.grand_total + contract.employer_pf)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="310"/>
+  </record>
+  <record id="jss_hr_payslip_rule_total_benefit_con" model="hr.salary.rule">
+    <field name="code">TTLBFC</field>
+    <field name="name">Total Benefit Contract</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.total_benefit)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.total_benefit)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="309"/>
+  </record>
+  <record id="jss_hr_payslip_rule_grand_total_con" model="hr.salary.rule">
+    <field name="code">GRTTLC</field>
+    <field name="name">Grand Total Contract</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.grand_total)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.grand_total)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="310"/>
+  </record>
+  <!--Employer related records PHNI-->
+  <record id="jss_hr_payslip_rule_total_benefit_phni" model="hr.salary.rule">
+    <field name="code">BFPHNI</field>
+    <field name="name">Total Benefit PHNI</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.total_benefit_phni)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.total_benefit_phni)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="309"/>
+  </record>
+  <record id="jss_hr_payslip_rule_grand_total_phni" model="hr.salary.rule">
+    <field name="code">GRPHNI</field>
+    <field name="name">Grand Total PHNI</field>
+    <field name="category_id" ref="hr_payroll.COMP"/>
+    <field name="condition_select">python</field>
+    <field name="condition_python">result = bool(contract.grand_total_phni)</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute">result = (contract.grand_total_phni)</field>
+    <field name="appears_on_payslip" eval="False"/>
+    <field name="sequence" eval="310"/>
+  </record>
+  <!-- Salary Structure -->
+  <record id="structure_regular" model="hr.payroll.structure">
+    <field name="code">REG</field>
+    <field name="name">Regular</field>
+    <field eval="[(6, 0, [ref('hr_payroll.hr_rule_basic'),ref('jss_hr_payslip_rule_medical_benefit'),ref('jss_hr_payslip_rule_total_pf'),ref('jss_hr_payslip_rule_mess_subsidy'),ref('jss_hr_payslip_rule_leave_n_othr'),ref('jss_hr_payslip_rule_gratuety'),ref('jss_hr_payslip_rule_total_benefit'),ref('jss_hr_payslip_rule_grand_total'), ref('hr_payroll.hr_rule_taxable'),ref('jss_hr_salary_rule_educational'),ref('jss_hr_salary_rule_travel'),ref('jss_hr_payslip_rule_advance_salary'),ref('jss_hr_payslip_rule_mess'),ref('jss_hr_payslip_rule_amenities'),ref('jss_hr_payslip_rule_creche'),ref('hr_payslip_rule_tds'),ref('jss_hr_payslip_rule_emp_pf'),ref('jss_hr_payslip_rule_basic_fifty'),ref('jss_hr_payslip_rule_basic_sixFive'),ref('jss_hr_payslip_rule_emplr_pf'),ref('hr_payroll.hr_rule_net')])]" name="rule_ids"/>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+  <record id="structure_contractual" model="hr.payroll.structure">
+    <field name="code">PHNI</field>
+    <field name="name">PHNI Projects</field>
+    <field eval="[(6, 0, [ref('hr_payroll.hr_rule_basic'), ref('hr_payroll.hr_rule_taxable'),ref('hr_payroll.hr_rule_net'),ref('hr_payslip_rule_tds'),ref('jss_hr_payslip_rule_advance_salary'),ref('jss_hr_payslip_rule_medical_benefit'),ref('jss_hr_payslip_rule_total_benefit_phni'),ref('jss_hr_payslip_rule_grand_total_phni')])]" name="rule_ids"/>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+  <record id="structure_contractual_ganiyari" model="hr.payroll.structure">
+    <field name="code">CONT_GAN</field>
+    <field name="name">Contractual At Ganiyari</field>
+    <field eval="[(6, 0, [ref('hr_payroll.hr_rule_basic'),ref('jss_hr_payslip_rule_medical_benefit'),ref('jss_hr_payslip_rule_mess_subsidy'),ref('jss_hr_payslip_rule_leave_n_othr'),ref('jss_hr_payslip_rule_gratuety'),ref('jss_hr_payslip_rule_total_benefit_con'),ref('jss_hr_payslip_rule_grand_total_con'), ref('hr_payroll.hr_rule_taxable'),ref('jss_hr_salary_rule_educational'),ref('jss_hr_salary_rule_travel'),ref('jss_hr_payslip_rule_advance_salary'),ref('jss_hr_payslip_rule_mess'),ref('jss_hr_payslip_rule_amenities'),ref('jss_hr_payslip_rule_creche'),ref('hr_payslip_rule_tds'),ref('hr_payroll.hr_rule_net')])]" name="rule_ids"/>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+</odoo>

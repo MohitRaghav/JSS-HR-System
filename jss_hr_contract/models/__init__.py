@@ -1,0 +1,1 @@
+import jss_hr_contract

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="jss_hr_contract_view_form" model="ir.ui.view">
+    <field name="name">hr.contract.form.inherit</field>
+    <field name="model">hr.contract</field>
+    <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='advantages']" position="replace"/>
+      <xpath expr="//group[@name='duration_group']" position="replace">
+        <group name="duration" string="Duration">
+          <label for="date_start" string="Duration"/>
+          <div><field name="date_start" class="oe_inline"/> - <field name="date_end" class="oe_inline"/>
+                                      </div>
+          <field name="working_hours" invisible="1"/>
+        </group>
+      </xpath>
+      <xpath expr="//page[@name='information']" position="after">
+        <page string="JSS Particulars">
+          <group col="2">
+            <group name="group_left" string="Allowance">
+              <field name="travel_allowance"/>
+              <field name="educaltional_allowance"/>
+              <field name="additional_allowance"/>
+            </group>
+            <group name="group_left" string="Deduction">
+              <field name="tds"/>
+              <field name="advanceSalary_deduction"/>
+              <field name="mess_deduction"/>
+              <field name="amenities_deduction"/>
+              <field name="creche_other_deduction"/>
+            </group>
+          </group>
+          <group col="2">
+            <group name="group_left" string="Loan Information">
+              <field name="initial_loan_amount"/>
+              <field name="remanining_amount"/>
+              <field name="remaining_installments_count"/>
+            </group>
+            <group name="group_left" string="Grant/Fund">
+              <field name="emp_grant"/>
+            </group>
+          </group>
+        </page>
+        <page string="JSS Contributed">
+          <group col="2">
+            <group name="group_left" string="Subsidies and Benefits">
+              <field name="mess_subsidy"/>
+              <field name="medical_benefit"/>
+            </group>
+          </group>
+        </page>
+      </xpath>
+      <xpath expr="//page[4]" position="attributes">
+        <attribute name="attrs">{'invisible': 1}</attribute>
+      </xpath>
+    </field>
+  </record>
+</odoo>
