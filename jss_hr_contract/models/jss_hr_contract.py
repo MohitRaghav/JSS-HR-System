@@ -26,6 +26,7 @@ class JssContract(models.Model):
     amenities_deduction = fields.Float(string = 'Amenities Charges', digits=dp.get_precision('Payroll'))
     creche_other_deduction = fields.Float(string = 'Creche and Others',digits=dp.get_precision('Payroll'))
 
+    supplementary_allowance = fields.Float(string='Supplementary Allowance', digits=dp.get_precision('Payroll'))
     initial_loan_amount = fields.Float(string = "Initial Loan Amount", digits=dp.get_precision('Payroll'))
     remanining_amount = fields.Float(string = "Remaining Amount", digits=dp.get_precision('Payroll'))
     remaining_installments_count = fields.Integer(string = "Remaining Installments Count", digits=dp.get_precision('Payroll'))
