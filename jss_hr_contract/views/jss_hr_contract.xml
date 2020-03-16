@@ -21,6 +21,7 @@
               <field name="travel_allowance"/>
               <field name="educaltional_allowance"/>
               <field name="additional_allowance"/>
+              <field name="supplementary_allowance"/>
             </group>
             <group name="group_left" string="Deduction">
               <field name="tds"/>
